@@ -1,0 +1,21 @@
+[package]
+name = "queue_performance_comparison"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+beanstalkd = "0.4"
+redis = "0.27.2"
+
+[[bin]]
+name = "put_message"
+path = "src/put_message.rs"
+
+[[bin]]
+name = "read_message"
+path = "src/read_message.rs"
+
+[[bin]]
+name = "benchmark"
+path = "src/main.rs"
+

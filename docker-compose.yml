@@ -1,0 +1,30 @@
+services:
+  beanstalkd:
+    image: schickling/beanstalkd
+    container_name: beanstalkd
+    platform: linux/amd64
+    ports:
+      - "11300:11300"
+
+
+  # RDB snapshots save the entire dataset to disk at specified intervals (e.g., every 60 seconds if at least 1 key changes).
+  # This approach offers fast recovery times and minimal I/O during regular operations but can result in data loss if a crash
+  # occurs between snapshots.
+  redis_rdb:
+    image: redis:latest
+    container_name: redis_rdb
+    command: ["redis-server", "--save", "60", "1", "--appendonly", "no"]
+    volumes:
+      - ./redis_rdb_data:/data
+    ports:
+      - "6379:6379"
+
+    # AOF logs every write operation to a file, providing better durability since it captures every change.
+  redis_aof:
+    image: redis:latest
+    container_name: redis_aof
+    command: ["redis-server", "--save", "", "--appendonly", "yes"]
+    volumes:
+      - ./redis_aof_data:/data
+    ports:
+      - "6380:6379"
